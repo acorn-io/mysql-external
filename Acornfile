@@ -1,0 +1,62 @@
+services: mysql: {
+	generated: job: "create"
+	default: true
+}
+
+jobs: create: {
+	image: "alpine"
+	env: {
+		"secret://config": ""
+	}
+	dirs: {
+		"/acorn/scripts": "./scripts"
+	}
+	entrypoint: ["/acorn/scripts/render.sh"]
+}
+
+secrets: admin: {
+	type: "generated"
+	params: job: "create"
+}
+
+secrets: user: {
+	type: "generated"
+	params: job: "create"
+}
+
+secrets: config: {
+	type: "credential.acorn.io/mysql"
+	params: {
+		instructions: localData.instructions
+		promptOrder: ["proto", "address", "port", "adminUsername", "adminPassword", "dbName"]
+	}
+	data: {
+		address:       ""
+		port:          ""
+		adminUsername: ""
+		adminPassword: ""
+		username:      ""
+		password:      ""
+		proto:         ""
+		dbName:        ""
+	}
+}
+
+localData: instructions: """
+  ## Overview
+  
+  This will create the service from an existing MySQL server.
+  
+  ## Instructions
+  
+  fill in:
+  
+  - address: the address of the MySQL server endpoint (redis.example.com)
+  - port: the port of the MySQL server (3306)
+  - adminUsername: the main username to use to connect to the MySQL server as an admin
+  - adminPassword: the main password to use to connect to the MySQL server as an admin
+  - username: the username to use to connect to the MySQL server db Instance
+  - password: the password to use to connect to the MySQL server db Instance
+  - proto: the protocol to use to connect to the MySQL server.
+  - dbName: the name of the database to use 
+  """
