@@ -1,3 +1,8 @@
+name:        "External MySQL Server"
+description: "Create an Acorn service to connect to an external MySQL server."
+readme:      "./README.md"
+info:        localData.info
+
 services: mysql: {
 	generated: job: "create"
 	default: true
@@ -60,3 +65,27 @@ localData: instructions: """
   - proto: the protocol to use to connect to the MySQL server.
   - dbName: the name of the database to use 
   """
+
+localData: info: """
+## Usage
+
+```aml
+services: db: {
+	external: "@{acorn.name}"
+}
+
+containers: app: {
+	image:    "app-image"
+	consumes: ["db"]
+	env: {
+		DB_HOST:       "@{@{service.}db.address}"
+		DB_PORT:       "@{@{service.}db.port.3306}"
+		DB_NAME:       "@{@{service.}db.data.dbName}"
+		DB_ADMIN_USER: "@{@{service.}db.secrets.admin.username}"
+		DB_ADMIN_PASS: "@{@{service.}db.secrets.admin.password}"
+		DB_USER:       "@{@{service.}db.secrets.user.username}"
+		DB_PASS:       "@{@{service.}db.secrets.user.password}"
+	}
+}
+```
+"""
