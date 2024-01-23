@@ -33,11 +33,11 @@ secrets: config: {
 	type: "credential.acorn.io/mysql"
 	params: {
 		instructions: localData.instructions
-		promptOrder: ["proto", "address", "port", "adminUsername", "adminPassword", "dbName"]
+		promptOrder: ["proto", "address", "port", "adminUsername", "adminPassword", "username", "password", "dbName"]
 	}
 	data: {
 		address:       ""
-		port:          ""
+		port:          "3306"
 		adminUsername: ""
 		adminPassword: ""
 		username:      ""
@@ -56,7 +56,7 @@ localData: instructions: """
   
   fill in:
   
-  - address: the address of the MySQL server endpoint (redis.example.com)
+  - address: the address of the MySQL server endpoint (mysql.example.com)
   - port: the port of the MySQL server (3306)
   - adminUsername: the main username to use to connect to the MySQL server as an admin
   - adminPassword: the main password to use to connect to the MySQL server as an admin
